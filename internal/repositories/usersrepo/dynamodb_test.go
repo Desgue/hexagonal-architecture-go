@@ -12,35 +12,44 @@ import (
 	"github.com/testcontainers/testcontainers-go/modules/localstack"
 )
 
-func TestInsert(t *testing.T) {
-	ctx := context.Background()
-	// Run localstack container
-	container, err := localstack.RunContainer(ctx, testcontainers.WithImage("localstack/localstack:latest"))
+type container struct {
+	*localstack.LocalStackContainer
+	URI string
+}
+
+func prepareContainer(ctx context.Context) (*container, error) {
+	cont, err := localstack.RunContainer(ctx, testcontainers.WithImage("localstack/localstack:latest"))
 	if err != nil {
-		t.Fatal(err)
+		return nil, err
 	}
-	// stop and remove localstack container
-	defer func() {
-		if err := container.Terminate(ctx); err != nil {
-			panic(err)
-		}
-	}()
-	// Testcontainer NewDockerProvider is used to get the provider of the docker daemon
 	provider, err := testcontainers.NewDockerProvider()
 	if err != nil {
-		t.Fatal("Error in getting docker provider")
+		return nil, err
 	}
 	host, err := provider.DaemonHost(ctx)
 	if err != nil {
-		t.Fatal("Error in getting provider host")
+		return nil, err
 	}
-	// Gett external mapped port for the container port
-	mappedPort, err := container.MappedPort(ctx, nat.Port("4566/tcp"))
+	mappedPort, err := cont.MappedPort(ctx, nat.Port("4566/tcp"))
 	if err != nil {
-		t.Fatal("Error in getting the external mapped port")
+		return nil, err
 	}
-	endpoint := fmt.Sprintf("http://%s:%d", host, mappedPort.Int())
-	repo := NewDynamoRepository(endpoint)
+	URI := fmt.Sprintf("http://%s:%d", host, mappedPort.Int())
+	return &container{LocalStackContainer: cont, URI: URI}, nil
+}
+
+func TestInsert(t *testing.T) {
+	ctx := context.Background()
+	localStack, err := prepareContainer(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := localStack.Terminate(ctx); err != nil {
+			panic(err)
+		}
+	}()
+	repo := NewDynamoRepository(localStack.URI)
 	if err := repo.createTable(); err != nil {
 		t.Fatal(err)
 	}
@@ -63,33 +72,16 @@ func TestInsert(t *testing.T) {
 }
 func TestFindById(t *testing.T) {
 	ctx := context.Background()
-	// Run localstack container
-	container, err := localstack.RunContainer(ctx, testcontainers.WithImage("localstack/localstack:latest"))
+	localStack, err := prepareContainer(ctx)
 	if err != nil {
 		t.Fatal(err)
 	}
-	// stop and remove localstack container
 	defer func() {
-		if err := container.Terminate(ctx); err != nil {
+		if err := localStack.Terminate(ctx); err != nil {
 			panic(err)
 		}
 	}()
-	// Testcontainer NewDockerProvider is used to get the provider of the docker daemon
-	provider, err := testcontainers.NewDockerProvider()
-	if err != nil {
-		t.Fatal("Error in getting docker provider")
-	}
-	host, err := provider.DaemonHost(ctx)
-	if err != nil {
-		t.Fatal("Error in getting provider host")
-	}
-	// Gett external mapped port for the container port
-	mappedPort, err := container.MappedPort(ctx, nat.Port("4566/tcp"))
-	if err != nil {
-		t.Fatal("Error in getting the external mapped port")
-	}
-	endpoint := fmt.Sprintf("http://%s:%d", host, mappedPort.Int())
-	repo := NewDynamoRepository(endpoint)
+	repo := NewDynamoRepository(localStack.URI)
 	if err := repo.createTable(); err != nil {
 		t.Fatal(err)
 	}
