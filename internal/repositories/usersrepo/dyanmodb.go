@@ -81,10 +81,6 @@ func (d *dynamoRepository) createTable() error {
 				KeyType:       aws.String("HASH"),
 			},
 		},
-		ProvisionedThroughput: &dynamodb.ProvisionedThroughput{
-			ReadCapacityUnits:  aws.Int64(10),
-			WriteCapacityUnits: aws.Int64(10),
-		},
 		TableName: aws.String(d.tableName),
 	}
 	_, err := d.client.CreateTable(input)
