@@ -15,9 +15,6 @@ func NewFakeRepository(storage map[string]domain.User) *fakeRepository {
 }
 
 func (this *fakeRepository) Insert(user domain.User) (domain.User, error) {
-	if user.Id == "" {
-		return domain.User{}, errors.New("Error inserting user: Empty User Id")
-	}
 	this.memoryStorage[user.Id] = user
 	return user, nil
 }
