@@ -27,24 +27,24 @@ func NewDynamoRepository(endpoint string) *dynamoRepository {
 }
 
 // By defining these two methods we implement the UserRepository interface from ports
-func (d *dynamoRepository) Insert(user domain.User) (domain.User, error) {
+func (this *dynamoRepository) Insert(user domain.User) (domain.User, error) {
 	entityParsed, err := dynamodbattribute.MarshalMap(user)
 	if err != nil {
 		return domain.User{}, err
 	}
 	input := &dynamodb.PutItemInput{
 		Item:      entityParsed,
-		TableName: aws.String(d.tableName),
+		TableName: aws.String(this.tableName),
 	}
-	_, err = d.client.PutItem(input)
+	_, err = this.client.PutItem(input)
 	if err != nil {
 		return domain.User{}, err
 	}
 	return user, nil
 }
-func (d *dynamoRepository) FindById(id string) (domain.User, error) {
-	result, err := d.client.GetItem(&dynamodb.GetItemInput{
-		TableName: aws.String(d.tableName),
+func (this *dynamoRepository) FindById(id string) (domain.User, error) {
+	result, err := this.client.GetItem(&dynamodb.GetItemInput{
+		TableName: aws.String(this.tableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"id": {
 				S: aws.String(id),
@@ -67,7 +67,7 @@ func (d *dynamoRepository) FindById(id string) (domain.User, error) {
 
 // Private functions
 
-func (d *dynamoRepository) createTable() error {
+func (this *dynamoRepository) createTable() error {
 	input := &dynamodb.CreateTableInput{
 		AttributeDefinitions: []*dynamodb.AttributeDefinition{
 			{
@@ -81,9 +81,9 @@ func (d *dynamoRepository) createTable() error {
 				KeyType:       aws.String("HASH"),
 			},
 		},
-		TableName: aws.String(d.tableName),
+		TableName: aws.String(this.tableName),
 	}
-	_, err := d.client.CreateTable(input)
+	_, err := this.client.CreateTable(input)
 	if err != nil {
 		return err
 
