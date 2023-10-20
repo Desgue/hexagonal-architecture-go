@@ -15,11 +15,7 @@ type dynamoRepository struct {
 	tableName string
 }
 
-const (
-	tableName = "Users"
-)
-
-func NewDynamoRepository(endpoint string) *dynamoRepository {
+func NewDynamoRepository(endpoint, tableName string) *dynamoRepository {
 	return &dynamoRepository{
 		client:    configClientDB(endpoint),
 		tableName: tableName,
@@ -81,7 +77,8 @@ func (this *dynamoRepository) createTable() error {
 				KeyType:       aws.String("HASH"),
 			},
 		},
-		TableName: aws.String(this.tableName),
+		TableName:   aws.String(this.tableName),
+		BillingMode: aws.String("PAY_PER_REQUEST"),
 	}
 	_, err := this.client.CreateTable(input)
 	if err != nil {

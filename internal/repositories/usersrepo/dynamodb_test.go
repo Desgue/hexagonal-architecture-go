@@ -3,6 +3,8 @@ package usersrepo
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
 	"reflect"
 	"testing"
 
@@ -12,26 +14,37 @@ import (
 	"github.com/testcontainers/testcontainers-go/modules/localstack"
 )
 
-func TestInsert(t *testing.T) {
+var (
+	testRepo *dynamoRepository
+)
+
+func TestMain(m *testing.M) {
 	ctx := context.Background()
 	localStackCont, err := prepareContainer(ctx)
 	if err != nil {
-		t.Fatal(err)
+		log.Fatalln(err)
 	}
-	defer func() {
-		if err := localStackCont.Terminate(ctx); err != nil {
-			panic(err)
-		}
-	}()
-	repo := NewDynamoRepository(localStackCont.URI)
-	if err := repo.createTable(); err != nil {
-		t.Fatal(err)
+	testRepo = NewDynamoRepository(localStackCont.URI, "Test-Table")
+	if err := testRepo.createTable(); err != nil {
+		log.Fatalln(err)
 	}
+
+	log.Println("Before all tests")
+	exitVal := m.Run()
+
+	if err = localStackCont.Terminate(ctx); err != nil {
+		log.Fatalln(err)
+	}
+	os.Exit(exitVal)
+}
+func TestInsert(t *testing.T) {
+	log.Println("TestInsert")
+
 	newUser := domain.User{
 		Id:   "1",
 		Name: "Tester",
 	}
-	gotUser, err := repo.Insert(newUser)
+	gotUser, err := testRepo.Insert(newUser)
 	if err != nil {
 		t.Errorf("Got error: %s when inserting new user", err)
 	}
@@ -45,29 +58,16 @@ func TestInsert(t *testing.T) {
 
 }
 func TestFindById(t *testing.T) {
-	ctx := context.Background()
-	localStackCont, err := prepareContainer(ctx)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer func() {
-		if err := localStackCont.Terminate(ctx); err != nil {
-			panic(err)
-		}
-	}()
-	repo := NewDynamoRepository(localStackCont.URI)
-	if err := repo.createTable(); err != nil {
-		t.Fatal(err)
-	}
+	log.Println("Test Find")
 	newUser := domain.User{
 		Id:   "1",
 		Name: "Tester",
 	}
-	_, err = repo.Insert(newUser)
+	_, err := testRepo.Insert(newUser)
 	if err != nil {
 		t.Errorf("Got error inserting user: %s", err)
 	}
-	gotUser, err := repo.FindById(newUser.Id)
+	gotUser, err := testRepo.FindById(newUser.Id)
 	if err != nil {
 		t.Errorf("Got error searching user: %s", err)
 	}
