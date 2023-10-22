@@ -2,6 +2,7 @@ package usersrepo
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/domain"
 	"github.com/aws/aws-sdk-go/aws"
@@ -38,6 +39,35 @@ func (this *dynamoRepository) Insert(user domain.User) (domain.User, error) {
 	}
 	return user, nil
 }
+func (this *dynamoRepository) FindAll() ([]domain.User, error) {
+	input := &dynamodb.ScanInput{
+		TableName: aws.String(this.tableName),
+	}
+	result, err := this.client.Scan(input)
+
+	if err != nil {
+		return []domain.User{}, err
+	}
+
+	if len(result.Items) == 0 {
+		return []domain.User{}, errors.New("No Results find")
+	}
+
+	var users []domain.User
+
+	for _, i := range result.Items {
+		user := domain.User{}
+		err = dynamodbattribute.UnmarshalMap(i, &user)
+		if err != nil {
+			fmt.Println("Got error unmarshalling:")
+			fmt.Println(err)
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	return users, nil
+
+}
 func (this *dynamoRepository) FindById(id string) (domain.User, error) {
 	result, err := this.client.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(this.tableName),
@@ -62,32 +92,6 @@ func (this *dynamoRepository) FindById(id string) (domain.User, error) {
 }
 
 // Private functions
-
-func (this *dynamoRepository) createTable() error {
-	input := &dynamodb.CreateTableInput{
-		AttributeDefinitions: []*dynamodb.AttributeDefinition{
-			{
-				AttributeName: aws.String("id"),
-				AttributeType: aws.String("S"),
-			},
-		},
-		KeySchema: []*dynamodb.KeySchemaElement{
-			{
-				AttributeName: aws.String("id"),
-				KeyType:       aws.String("HASH"),
-			},
-		},
-		TableName:   aws.String(this.tableName),
-		BillingMode: aws.String("PAY_PER_REQUEST"),
-	}
-	_, err := this.client.CreateTable(input)
-	if err != nil {
-		return err
-
-	}
-	return nil
-}
-
 func configClientDB(endpoint string) *dynamodb.DynamoDB {
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		Config: aws.Config{

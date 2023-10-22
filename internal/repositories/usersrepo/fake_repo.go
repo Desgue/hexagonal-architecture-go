@@ -30,3 +30,7 @@ func (this *fakeRepository) FindAll() ([]domain.User, error) {
 	}
 	return allUsers, nil
 }
+
+func (this *fakeRepository) FindById(id string) (domain.User, error) {
+	return domain.User{}, nil
+}

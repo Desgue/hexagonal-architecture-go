@@ -19,18 +19,18 @@ var (
 )
 
 func TestMain(m *testing.M) {
+	log.Println("Setup before all tests")
+
 	ctx := context.Background()
 	localStackCont, err := prepareContainer(ctx)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	testRepo = NewDynamoRepository(localStackCont.URI, "Test-Table")
-	if err := testRepo.createTable(); err != nil {
-		log.Fatalln(err)
-	}
 
-	log.Println("Before all tests")
 	exitVal := m.Run()
+
+	log.Println("After all tests")
 
 	if err = localStackCont.Terminate(ctx); err != nil {
 		log.Fatalln(err)
@@ -39,7 +39,10 @@ func TestMain(m *testing.M) {
 }
 func TestInsert(t *testing.T) {
 	log.Println("TestInsert")
-
+	if err := createTable(testRepo); err != nil {
+		log.Fatalln(err)
+	}
+	defer deleteTable(testRepo)
 	newUser := domain.User{
 		Id:   "1",
 		Name: "Tester",
@@ -57,8 +60,21 @@ func TestInsert(t *testing.T) {
 	}
 
 }
+func TestFindAll(t *testing.T) {
+	/* log.Println("Test FindAll")
+	if err := createTable(testRepo); err != nil {
+		log.Fatalln(err)
+	}
+	defer deleteTable(testRepo) */
+
+}
 func TestFindById(t *testing.T) {
-	log.Println("Test Find")
+	log.Println("Test FindById")
+	if err := createTable(testRepo); err != nil {
+		log.Fatalln(err)
+	}
+	defer deleteTable(testRepo)
+
 	newUser := domain.User{
 		Id:   "1",
 		Name: "Tester",
