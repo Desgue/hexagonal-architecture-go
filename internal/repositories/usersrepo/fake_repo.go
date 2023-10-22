@@ -10,8 +10,8 @@ type fakeRepository struct {
 	memoryStorage map[string]domain.User
 }
 
-func NewFakeRepository(storage map[string]domain.User) *fakeRepository {
-	return &fakeRepository{memoryStorage: storage}
+func NewFakeRepository(store map[string]domain.User) *fakeRepository {
+	return &fakeRepository{memoryStorage: store}
 }
 
 func (this *fakeRepository) Insert(user domain.User) (domain.User, error) {
