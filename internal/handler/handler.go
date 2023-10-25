@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/domain"
 	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/ports"
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,9 @@ func NewUserHttpHandler(service ports.UserService) *UserHttpHandler {
 }
 
 func (this *UserHttpHandler) SaveUser(c *gin.Context) {
+	var user domain.User
+	c.BindJSON(&user)
+	c.JSON(http.StatusOK, user)
 
 }
 func (this *UserHttpHandler) GetUsers(c *gin.Context) {

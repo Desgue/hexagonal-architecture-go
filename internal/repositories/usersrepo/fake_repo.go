@@ -6,20 +6,20 @@ import (
 	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/domain"
 )
 
-type fakeRepository struct {
+type FakeRepository struct {
 	memoryStorage map[string]domain.User
 }
 
-func NewFakeRepository(store map[string]domain.User) *fakeRepository {
-	return &fakeRepository{memoryStorage: store}
+func NewFakeRepository(store map[string]domain.User) *FakeRepository {
+	return &FakeRepository{memoryStorage: store}
 }
 
-func (this *fakeRepository) Insert(user domain.User) (domain.User, error) {
+func (this *FakeRepository) Insert(user domain.User) (domain.User, error) {
 	this.memoryStorage[user.Id] = user
 	return user, nil
 }
 
-func (this *fakeRepository) FindAll() ([]domain.User, error) {
+func (this *FakeRepository) FindAll() ([]domain.User, error) {
 	allUsers := []domain.User{}
 
 	if len(this.memoryStorage) == 0 {
@@ -31,7 +31,7 @@ func (this *fakeRepository) FindAll() ([]domain.User, error) {
 	return allUsers, nil
 }
 
-func (this *fakeRepository) FindById(id string) (domain.User, error) {
+func (this *FakeRepository) FindById(id string) (domain.User, error) {
 	user := this.memoryStorage[id]
 	return user, nil
 }
