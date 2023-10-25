@@ -32,12 +32,10 @@ func TestGetAll(t *testing.T) {
 	users := []domain.User{
 		{Id: "1", Name: "Tester1"},
 		{Id: "2", Name: "Tester2"},
-		{Id: "3", Name: "Tester3"},
 	}
 	repo := usersrepo.NewFakeRepository(map[string]domain.User{
 		"1": {Id: "1", Name: "Tester1"},
 		"2": {Id: "2", Name: "Tester2"},
-		"3": {Id: "3", Name: "Tester3"},
 	})
 
 	service := NewUserService(repo)

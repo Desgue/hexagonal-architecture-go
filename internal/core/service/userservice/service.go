@@ -30,3 +30,10 @@ func (this *userService) GetAll() ([]domain.User, error) {
 	}
 	return allUsers, nil
 }
+func (this *userService) GetById(id string) (domain.User, error) {
+	user, err := this.userRepository.FindById(id)
+	if err != nil {
+		return domain.User{}, err
+	}
+	return user, nil
+}

@@ -32,5 +32,6 @@ func (this *fakeRepository) FindAll() ([]domain.User, error) {
 }
 
 func (this *fakeRepository) FindById(id string) (domain.User, error) {
-	return domain.User{}, nil
+	user := this.memoryStorage[id]
+	return user, nil
 }
