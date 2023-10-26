@@ -13,7 +13,6 @@ func main() {
 		"1": {Id: "1", Name: "Tester1"},
 		"2": {Id: "2", Name: "Tester2"},
 	}
-	//want := []domain.User{{Id: "1", Name: "Tester1"}, {Id: "2", Name: "Tester2"}}
 
 	r := gin.Default()
 	repo := usersrepo.NewFakeRepository(users)

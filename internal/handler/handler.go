@@ -18,7 +18,9 @@ func NewUserHttpHandler(service ports.UserService) *UserHttpHandler {
 		Service: service,
 	}
 }
-
+func (this *UserHttpHandler) Root(c *gin.Context) {
+	c.Redirect(http.StatusMovedPermanently, "/users")
+}
 func (this *UserHttpHandler) SaveUser(c *gin.Context) {
 	var user domain.User
 	c.BindJSON(&user)
@@ -40,7 +42,9 @@ func (this *UserHttpHandler) GetUserById(c *gin.Context) {
 	id := c.Param("id")
 	user, err := this.Service.GetById(id)
 	if err != nil {
-		c.String(http.StatusNotFound, "User not found")
+		c.String(http.StatusNotFound, err.Error())
+		return
 	}
+
 	c.JSON(http.StatusOK, user)
 }
