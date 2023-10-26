@@ -1,7 +1,6 @@
 package userhandler
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/domain"
@@ -18,22 +17,22 @@ func NewUserHttpHandler(service ports.UserService) *UserHttpHandler {
 		Service: service,
 	}
 }
-func (this *UserHttpHandler) Root(c *gin.Context) {
-	c.Redirect(http.StatusMovedPermanently, "/users")
-}
 func (this *UserHttpHandler) SaveUser(c *gin.Context) {
 	var user domain.User
 	c.BindJSON(&user)
+	user, err := this.Service.Create(user)
+	if err != nil {
+		c.String(http.StatusNotFound, err.Error())
+		return
+	}
 	c.JSON(http.StatusOK, user)
 
 }
 func (this *UserHttpHandler) GetUsers(c *gin.Context) {
 	users, err := this.Service.GetAll()
 	if err != nil {
-		c.JSON(404, users)
-	}
-	if err != nil {
-		log.Fatalln(err)
+		c.String(http.StatusNotFound, err.Error())
+		return
 	}
 	c.JSON(http.StatusOK, users)
 

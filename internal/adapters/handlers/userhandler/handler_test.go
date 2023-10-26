@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Desgue/hexagonal-architecture-go-example/internal/adapters/repositories/usersrepo"
 	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/domain"
 	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/service/userservice"
-	"github.com/Desgue/hexagonal-architecture-go-example/internal/repositories/usersrepo"
 	"github.com/gin-gonic/gin"
 	"github.com/magiconair/properties/assert"
 )

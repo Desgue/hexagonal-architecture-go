@@ -17,8 +17,8 @@ func main() {
 	r := gin.Default()
 	repo := usersrepo.NewFakeRepository(users)
 	service := userservice.NewUserService(repo)
-	httpHandler := userhandler.NewUserHttpHandler(service)
-	userhandler.RegisterRoutes(r, httpHandler)
+	usersHttpHandler := userhandler.NewUserHttpHandler(service)
+	userhandler.RegisterRoutes(r, usersHttpHandler)
 
 	r.Run()
 }

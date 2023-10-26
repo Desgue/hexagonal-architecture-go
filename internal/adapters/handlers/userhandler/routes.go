@@ -1,13 +1,18 @@
 package userhandler
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterRoutes(r *gin.Engine, handler *UserHttpHandler) {
-	r.GET("/", handler.Root)
-	r.GET("/users", handler.GetUsers)
-	r.GET("/users/id/:id", handler.GetUserById)
-	r.POST("/users", handler.SaveUser)
+	r.NoRoute(func(ctx *gin.Context) {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+	})
+	v1 := r.Group("/api/v1")
+	v1.GET("/users", handler.GetUsers)
+	v1.GET("/users/id/:id", handler.GetUserById)
+	v1.POST("/users", handler.SaveUser)
 
 }
