@@ -1,4 +1,4 @@
-package handler
+package userhandler
 
 import (
 	"bytes"
@@ -28,7 +28,7 @@ var (
 
 func TestMain(m *testing.M) {
 	r = gin.Default()
-	UsersRoute(r, handler)
+	RegisterRoutes(r, handler)
 
 	exitVal := m.Run()
 
