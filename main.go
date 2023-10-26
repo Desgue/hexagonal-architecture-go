@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/Desgue/hexagonal-architecture-go-example/internal/adapters/handlers/userhandler"
+	"github.com/Desgue/hexagonal-architecture-go-example/internal/adapters/repositories/usersrepo"
 	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/domain"
 	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/service/userservice"
-	"github.com/Desgue/hexagonal-architecture-go-example/internal/handler"
-	"github.com/Desgue/hexagonal-architecture-go-example/internal/repositories/usersrepo"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,8 +17,8 @@ func main() {
 	r := gin.Default()
 	repo := usersrepo.NewFakeRepository(users)
 	service := userservice.NewUserService(repo)
-	httpHandler := handler.NewUserHttpHandler(service)
-	handler.UsersRoute(r, httpHandler)
+	httpHandler := userhandler.NewUserHttpHandler(service)
+	userhandler.RegisterRoutes(r, httpHandler)
 
 	r.Run()
 }
