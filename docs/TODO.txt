@@ -1,6 +1,6 @@
 1. *Vehicles Management* 
     - Add Update and Delete Vehicles
-    - Vehicles have ID, Plate number, Make, Model, Price,  Available, Reserved, Sold Status (Add other characteristic later)
+    - Vehicles have ID, Plate number, Make, Model, Price, Milage,  Available, Reserved, Sold Status (Add other characteristic later)
     - Query Vehicles
 2. *Client Management*
     - Save clients or prospect clients information for future contacts
