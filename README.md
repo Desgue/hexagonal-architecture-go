@@ -1,6 +1,4 @@
-# hexagonal-architecture-go-example
-
-#Used Vehicle auto-stand management#
+# Used Vehicle auto-stand management #
 Making this project to pratice building a backend api in Go and further consolidate the concpets of the Hexagonal Architecture Pattern when developing software
 
 Project is on the beggining, as i only work here when i am not busy in my current Job. 
