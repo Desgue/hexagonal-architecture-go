@@ -1,0 +1,13 @@
+1. *Vehicles Management* 
+    - Add Update and Delete Vehicles
+    - Vehicles have ID, Plate number, Make, Model, Price,  Available, Reserved, Sold Status (Add other characteristic later)
+    - Query Vehicles
+2. *Client Management*
+    - Save clients or prospect clients information for future contacts
+    - Clients have ID, Personal Information, Car Bought, Interested Car(if prospect)
+3. *Cashflow and Sales Management*
+    - Monitor Incoming cashflow from vehicles sales
+    - Save Sales record associated with car and client for further analysis
+    - Minor Accounting functionality for deducting costs and taxes from sale to calculate profit~
+    - Data visualization for all finance information        
+
