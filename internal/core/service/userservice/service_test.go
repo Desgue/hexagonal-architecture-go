@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Desgue/hexagonal-architecture-go-example/internal/adapters/repositories/usersrepo"
 	"github.com/Desgue/hexagonal-architecture-go-example/internal/core/domain"
-	"github.com/Desgue/hexagonal-architecture-go-example/internal/repositories/usersrepo"
 )
 
 func TestCreate(t *testing.T) {

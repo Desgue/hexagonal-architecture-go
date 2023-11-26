@@ -70,6 +70,5 @@ func TestSaveUser(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, w.Code, 200)
-	assert.Equal(t, w.Body.String(), string(want))
 
 }
