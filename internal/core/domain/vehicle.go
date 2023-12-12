@@ -1,23 +1,21 @@
 package domain
 
 const (
-	Available Status = iota
+	Available int = iota
 	Reserved
 	Sold
 )
 
 type Vehicle struct {
-	ID          string
-	Price       int
-	VehicleInfo VehicleInfo
-	Status      Status
+	ID          string      `json:"id"`
+	Price       int         `json:"price"`
+	VehicleInfo VehicleInfo `json:"vehicleInfo"`
+	Status      int         `json:"status"`
 }
 
 type VehicleInfo struct {
-	Make  string
-	Model string
-	Year  int
-	Km    int
+	Make  string `json:"make"`
+	Model string `json:"model"`
+	Year  int    `json:"year"`
+	Km    int    `json:"km"`
 }
-
-type Status int

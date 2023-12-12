@@ -146,10 +146,7 @@ func (fr fakeRepository) FindById(id string) (domain.Vehicle, error) {
 	}
 	return domain.Vehicle{}, apperr.NotFound
 }
-func (fr fakeRepository) Update(v domain.Vehicle) (domain.Vehicle, error) {
-	fr.MemoryStorage[v.ID] = v
-	return fr.MemoryStorage[v.ID], nil
-}
+
 func (fr fakeRepository) Delete(id string) error {
 	delete(fr.MemoryStorage, id)
 	if _, ok := fr.MemoryStorage[id]; ok {

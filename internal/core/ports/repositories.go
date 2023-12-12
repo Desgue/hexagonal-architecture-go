@@ -12,6 +12,5 @@ type VehicleRepository interface {
 	Insert(v domain.Vehicle) (domain.Vehicle, error)
 	FindAll() ([]domain.Vehicle, error)
 	FindById(id string) (domain.Vehicle, error)
-	Update(v domain.Vehicle) (domain.Vehicle, error)
 	Delete(id string) error
 }

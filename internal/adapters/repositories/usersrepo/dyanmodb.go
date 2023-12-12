@@ -23,7 +23,6 @@ func NewDynamoRepository(endpoint, tableName string) *dynamoRepository {
 	}
 }
 
-// By defining these two methods we implement the UserRepository interface from ports
 func (this *dynamoRepository) Insert(user domain.User) (domain.User, error) {
 	entityParsed, err := dynamodbattribute.MarshalMap(user)
 	if err != nil {
