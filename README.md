@@ -69,7 +69,7 @@ I chose Go for its speed, readability, and features within the standard library,
 
 ### Frontend
 
-Considering my backend focus, the frontend is not yet in development. I am considering the following stack:
+The frontend is not yet in development but I am considering the following stack:
 
 - **[React](https://react.dev/):** Main frontend framework
 - **[Shadcn Components](https://ui.shadcn.com/):** Component library
