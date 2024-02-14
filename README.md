@@ -1,39 +1,83 @@
-# Used Vehicle auto-stand management #
-Making this project to pratice building a backend api in Go and further consolidate the concpets of the Hexagonal Architecture Pattern when developing software
+# Used Vehicle Auto-Stand Management
 
-Project is on the beggining, as i only work here when i am not busy in my current Job. 
+## Overview
 
-## Objectives ##
+I am developing a backend API in Go to practice and consolidate the concepts of the Hexagonal Architecture Pattern. This project focuses on building a production-ready Car Management App suitable for a small auto stand business, intended for use by a small group (1-2 persons).
 
-My main goal with this project is to build a fully functional Car Management APP  production ready for a small Auto Stand business, to be used by a small (think 1-2 persons) group of people. 
+## Objectives
 
-### Features ###
-1. Car Stock Management
-2. Store Customer Information
-3. Financial Dashboard for easily analyse car sales costs and profits
-4. Admin log in only, no user registration.
-5. One DB for all Admins as this is mainly for my personal use
+The main goal is to create a fully functional car management application with the following features:
+
+- Car Stock Management
+- Store Customer Information
+- Financial Dashboard for analyzing car sales costs and profits
+- Admin login only, no user registration
+- Single DB for all admins (personal use)
+
+## System Design Choices
+
+### Hexagonal Architecture
+
+I chose the Hexagonal Architecture, often known as Ports and Adapters, for several reasons:
+
+1. **Separation of Concerns:** Separation between the core business logic and external concerns that Hexagonal Architecture provides, making the system more modular and maintainable.
+
+2. **Testability:** This architecture facilitates unit testing of the core business logic without the need for external dependencies, allowing me to create more reliable and maintainable tests.
+
+3. **Adaptability:** It makes easier for me to adapt to changes in external components (such as databases or APIs) without affecting the core application logic.
+
+4. **Scalability:** Even in a small project, this architecture lays the groundwork for future scalability, ensuring a smoother transition as the project grows.
+
+5. **Maintainability:** With a well-structured architecture, maintaining and evolving the system becomes more manageable, minimizing the risk of introducing bugs during updates.
+
+### Test-Driven Development (TDD)
+
+I follow the Test-Driven Development (TDD) methodology, which involves writing tests before the actual code. This approach offers several advantages:
+
+1. **Early Detection of Issues:** Writing tests before implementation helps me catch potential issues early in the development process, ensuring a more robust codebase.
+
+2. **Improved Code Quality:** TDD encourages me to write modular and testable code, leading to better code quality and maintainability.
+
+3. **Refactoring Confidence:** With a comprehensive test suite, I can confidently refactor code knowing that existing functionality remains intact if the tests pass.
+
+4. **Time Saving:** While it may seem counterintuitive, TDD often saves time in the long run. The upfront investment in writing tests pays off during refactoring, reducing the likelihood of introducing bugs and streamlining the debugging process.
+
+5. **Documentation:** Test cases serve as living documentation, providing insights into the expected behavior of various components. This is especially valuable when working on a modular architecture like Hexagonal.
+
+By combining Hexagonal Architecture with TDD, I aim to create a system that is flexible and maintainable and also thoroughly tested, ensuring a reliable and adaptable basis for future development.
 
 
-## Technologies Used ## 
+## Technologies Used
 
-#### Backend ####
-I chose Go because its the language I currently work with, but not only. Go is blazingly fast, easy to read and to write and has many features needed for building a backend within the standard library, making less dependent of outside librarys and frameworks. This makes developing in Go fast and straightfoward. Also Binaries! Go can compile to a single binary either for Mac, Linux or Windows. Making it easy to run and deploy no matter the host environment. 
+### Backend
 
-#### Database ####
-For images and static files, I am using AWS S3, its cheap, easy and safeway to store images (mostly my needs in this app), but also any static file. 
+I chose Go for its speed, readability, and features within the standard library, reducing dependency on external libraries and frameworks. The ability to compile to a single binary for different platforms simplifies deployment.
 
-For the database I am using DynamoDB from Amazon. Its a serverless database, which means i dont need to host and config a db server by myself, i have an Amazon provided DynamoDB Docker image to develop my application locally with no need to worry about unwanted cloud costs and the Aws Sdk for go is easy to implement. If i decide to deploy this application with DynamoDB I can do it easily. And because of its serverless nature, i do not have to worry about server maintence costs, as Dynamo is a paid per use service (think 1 million read and writes in the free tire ;).
+- **Server Language: [Go](https://golang.org/)**
+- **Authentication: [Amazon Cognito](https://aws.amazon.com/cognito/)**
 
-Also testing, testing with DynamoDB is a breeze.
+### Database
 
-#### Testing ####
-Go has a built in testing library to make it easy to Unit test your applications, being one more reason to use go. So the only particular technology i use to test is the Testcontainer library and the LocalStack Cloud Emulator. 
-The Testcontainer library makes it easy to work with docker from within your Go code. You can pull images and lift containers with a few lines of code, making integration testing super simple. LocalStack has an AWS container that emulates a bunch of the Amazon Services, I can use it to test my DynamoDB calls as much i can use it to test the S3 API or even some lambda functions. I super recomend to anyone interested in working in a cloud native envoirement. 
+- **AWS S3:** Used for storing images and static files.
+- **DynamoDB (Amazon):** A serverless database, allowing easy development locally with a provided [Docker image](https://hub.docker.com/r/amazon/dynamodb-local/). It offers pay-per-use pricing and convenient testing
 
-#### Frontend ####
-Well mostly being a backend developer by choice (centering divs is painful), I still have to make an user interface or i wont have any users for my app. For that i chose the infamous React. Mainly because its a mainstream freamework(library? who knows). That means, plenty of resources and pre made components I can re use. I am thinking ChakraUI for the components as they come already estilized, but its a decision to be made when the project evolves and i will update this document accordingly. 
+### Testing
 
+- **Go Testing Library:** Built-in testing library in Go.
+- **[Testcontainer](https://github.com/testcontainers/testcontainers-go):** Facilitates Docker integration testing. 
+- **[LocalStack](https://github.com/localstack/localstack):** Emulates AWS services, making it easy to test DynamoDB calls and other AWS-related functionality. 
 
+### Frontend
 
+The frontend is not yet in development but I am considering the following stack:
 
+- **[React](https://react.dev/):** Main frontend framework
+- **[Shadcn Components](https://ui.shadcn.com/):** Component library
+- **[Tailwind CSS](https://tailwindcss.com/):** Utility-first CSS framework
+- **[Next.js](https://nextjs.org/):** React framework for building web applications 
+
+## Project Status
+
+In the initial stages, development occurs during free time outside my current job commitments. The project aims to balance professionalism with personal exploration and learning.
+
+Feel free to contribute or suggest improvements as the project evolves.
